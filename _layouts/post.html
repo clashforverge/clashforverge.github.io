@@ -1,76 +1,169 @@
-
 ---
 layout: default
 ---
 
-<article class="post h-entry px-4 py-8 bg-white shadow-md rounded-lg" itemscope itemtype="http://schema.org/BlogPosting">
+<div class="max-w-7xl mx-auto px-4 py-8">
+  <div class="flex flex-col lg:flex-row gap-8">
 
-  <header class="post-header mb-6">
-    <h1 class="post-title p-name text-4xl font-bold text-gray-900 mb-2" itemprop="name headline">{{ page.title | escape }}</h1>
-    <p class="post-meta text-sm text-gray-600">
-      <time class="dt-published" datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
-        {{ page.date | date: "%b %-d, %Y" }}
-      </time>
-      {% if page.author %}
-        • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span class="p-author h-card" itemprop="name">{{ page.author }}</span></span>
-      {% endif %}
-      {% if page.last_modified_at %}
-        • Updated: <time datetime="{{ page.last_modified_at | date_to_xmlschema }}" itemprop="dateModified">{{ page.last_modified_at | date: "%b %-d, %Y" }}</time>
-      {% endif %}
-    </p>
-  </header>
+    <!-- Main Article -->
+    <article class="flex-1 min-w-0 bg-white rounded-2xl shadow-sm p-6 lg:p-8">
 
-  <div class="post-content e-content prose lg:prose-lg max-w-none" itemprop="articleBody">
-    {% include breadcrumbs.html %}
-    {% if page.toc %}
-      <div class="my-6 p-4 bg-gray-50 border border-gray-200 rounded-md">
-        <h2 class="text-xl font-semibold mb-2">Table of Contents</h2>
-        {{ content | toc_only }}
+      <!-- Breadcrumbs -->
+      {% include breadcrumbs.html %}
+
+      <!-- Header -->
+      <header class="mb-6">
+        {% if page.categories.size > 0 %}
+        <div class="mb-3">
+          {% for cat in page.categories %}
+          <a href="/categories/{{ cat | slugify }}/" class="inline-block bg-red-100 text-red-700 text-xs font-semibold px-3 py-1 rounded-full mr-2 hover:bg-red-200 transition">{{ cat }}</a>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <h1 class="text-2xl lg:text-3xl font-extrabold text-gray-900 leading-tight mb-4">{{ page.title | escape }}</h1>
+
+        <div class="flex flex-wrap items-center gap-3 text-sm text-gray-500 pb-4 border-b border-gray-100">
+          <span class="flex items-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+            <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y-%m-%d" }}</time>
+          </span>
+          {% if page.author %}
+          <span class="flex items-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+            {{ page.author | escape }}
+          </span>
+          {% endif %}
+          {% assign words = content | number_of_words %}
+          <span>约 {{ words | divided_by: 300 | plus: 1 }} 分钟阅读</span>
+        </div>
+      </header>
+
+      <!-- Article Content -->
+      <div class="prose prose-lg max-w-none
+        prose-headings:font-bold prose-headings:text-gray-900
+        prose-h2:text-xl prose-h2:border-l-4 prose-h2:border-red-500 prose-h2:pl-3 prose-h2:mt-8
+        prose-h3:text-lg prose-h3:text-gray-800 prose-h3:mt-6
+        prose-p:text-gray-700 prose-p:leading-relaxed
+        prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline
+        prose-img:rounded-xl prose-img:shadow-md
+        prose-code:bg-gray-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-sm
+        prose-pre:bg-gray-900 prose-pre:rounded-xl
+        prose-blockquote:border-l-4 prose-blockquote:border-blue-400 prose-blockquote:bg-blue-50 prose-blockquote:py-1
+        prose-table:text-sm prose-th:bg-gray-50">
+        {{ content }}
       </div>
-    {% endif %}
-    {{ content }}
 
-    {% comment %} Internal Linking based on Tags and Categories {% endcomment %}
-    {% assign current_post_tags = page.tags %}
-    {% assign current_post_categories = page.categories %}
-    {% assign related_posts_by_tags = site.posts | where_exp: "post", "post.url != page.url and post.tags contains_any current_post_tags" | sample: 3 %}
-    {% assign related_posts_by_categories = site.posts | where_exp: "post", "post.url != page.url and post.categories contains_any current_post_categories" | sample: 3 %}
+      <!-- Tags -->
+      {% if page.tags.size > 0 %}
+      <div class="mt-8 pt-6 border-t border-gray-100">
+        <div class="flex flex-wrap gap-2">
+          {% for tag in page.tags %}
+          <a href="/tags/{{ tag | slugify }}/" class="inline-block bg-gray-100 hover:bg-blue-100 text-gray-600 hover:text-blue-700 text-sm px-3 py-1 rounded-full transition">#{{ tag }}</a>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
 
-    {% assign all_related_posts = related_posts_by_tags | concat: related_posts_by_categories | uniq %}
+      <!-- Social Share -->
+      <div class="mt-6 pt-6 border-t border-gray-100">
+        <p class="text-sm text-gray-500 mb-3">分享文章：</p>
+        <div class="flex flex-wrap gap-2">
+          <a href="https://twitter.com/intent/tweet?url={{ page.url | absolute_url | url_encode }}&text={{ page.title | url_encode }}" target="_blank" rel="noopener" class="flex items-center gap-2 bg-sky-500 hover:bg-sky-600 text-white text-sm px-4 py-2 rounded-lg transition">Twitter</a>
+          <a href="https://t.me/share/url?url={{ page.url | absolute_url | url_encode }}&text={{ page.title | url_encode }}" target="_blank" rel="noopener" class="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white text-sm px-4 py-2 rounded-lg transition">Telegram</a>
+          <a href="https://www.facebook.com/sharer/sharer.php?u={{ page.url | absolute_url | url_encode }}" target="_blank" rel="noopener" class="flex items-center gap-2 bg-blue-700 hover:bg-blue-800 text-white text-sm px-4 py-2 rounded-lg transition">Facebook</a>
+          <button onclick="navigator.clipboard.writeText(window.location.href).then(()=>alert('链接已复制！'))" class="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm px-4 py-2 rounded-lg transition">复制链接</button>
+        </div>
+      </div>
 
-    {% if all_related_posts.size > 0 %}
-      <div class="mt-8 p-6 bg-white shadow-md rounded-lg">
-        <h4 class="text-2xl font-bold mb-4">You might also like:</h4>
-        <ul class="list-disc pl-5 space-y-2">
-          {% for post in all_related_posts limit: 5 %}
-            <li><a href="{{ post.url | relative_url }}" class="text-blue-600 hover:underline">{{ post.title }}</a></li>
+      <!-- Prev / Next Navigation -->
+      <nav class="mt-8 pt-6 border-t border-gray-100 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {% if page.previous.url %}
+        <a href="{{ page.previous.url | relative_url }}" class="group flex flex-col p-4 bg-gray-50 hover:bg-blue-50 rounded-xl border border-gray-200 hover:border-blue-300 transition">
+          <span class="text-xs text-gray-400 mb-1">← 上一篇</span>
+          <span class="text-sm font-semibold text-gray-800 group-hover:text-blue-700 line-clamp-2 transition">{{ page.previous.title | escape }}</span>
+        </a>
+        {% else %}
+        <div></div>
+        {% endif %}
+
+        {% if page.next.url %}
+        <a href="{{ page.next.url | relative_url }}" class="group flex flex-col p-4 bg-gray-50 hover:bg-blue-50 rounded-xl border border-gray-200 hover:border-blue-300 transition text-right">
+          <span class="text-xs text-gray-400 mb-1">下一篇 →</span>
+          <span class="text-sm font-semibold text-gray-800 group-hover:text-blue-700 line-clamp-2 transition">{{ page.next.title | escape }}</span>
+        </a>
+        {% endif %}
+      </nav>
+
+    </article>
+
+    <!-- Sidebar -->
+    <aside class="w-full lg:w-72 flex-shrink-0 space-y-6">
+
+      <!-- Latest Posts -->
+      <div class="bg-white rounded-2xl shadow-sm p-5 sticky top-4">
+        <h3 class="text-base font-bold text-gray-900 mb-4 pb-2 border-b border-gray-100">最新文章</h3>
+        <ul class="space-y-3">
+          {% for post in site.posts limit: 8 %}
+          {% unless post.url == page.url %}
+          <li>
+            <a href="{{ post.url | relative_url }}" class="group block">
+              <p class="text-sm font-medium text-gray-800 group-hover:text-blue-600 leading-snug line-clamp-2 transition">{{ post.title | escape }}</p>
+              <p class="text-xs text-gray-400 mt-0.5">{{ post.date | date: "%Y-%m-%d" }}</p>
+            </a>
+          </li>
+          {% endunless %}
           {% endfor %}
         </ul>
       </div>
-    {% endif %}
+
+      <!-- Related Posts by Tags -->
+      {% if page.tags.size > 0 %}
+      <div class="bg-white rounded-2xl shadow-sm p-5">
+        <h3 class="text-base font-bold text-gray-900 mb-4 pb-2 border-b border-gray-100">相关文章</h3>
+        <ul class="space-y-3">
+          {% assign current_tags = page.tags %}
+          {% assign related_count = 0 %}
+          {% for post in site.posts %}
+            {% unless post.url == page.url %}
+              {% for tag in current_tags %}
+                {% if post.tags contains tag and related_count < 5 %}
+                  <li>
+                    <a href="{{ post.url | relative_url }}" class="group block">
+                      <p class="text-sm font-medium text-gray-800 group-hover:text-blue-600 leading-snug line-clamp-2 transition">{{ post.title | escape }}</p>
+                      <p class="text-xs text-gray-400 mt-0.5">{{ post.date | date: "%Y-%m-%d" }}</p>
+                    </a>
+                  </li>
+                  {% assign related_count = related_count | plus: 1 %}
+                {% endif %}
+              {% endfor %}
+            {% endunless %}
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+    </aside>
   </div>
+</div>
 
-  {% if page.tags.size > 0 %}
-    <div class="post-tags mt-8 flex flex-wrap gap-2 text-sm">
-      <span class="font-semibold">Tags:</span>
-      {% for tag in page.tags %}
-        <a href="/tags/{{ tag | slugify }}/" class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full hover:bg-blue-200">{{ tag }}</a>
-      {% endfor %}
-    </div>
-  {% endif %}
-
-  {% if page.categories.size > 0 %}
-    <div class="post-categories mt-4 flex flex-wrap gap-2 text-sm">
-      <span class="font-semibold">Categories:</span>
-      {% for category in page.categories %}
-        <a href="/categories/{{ category | slugify }}/" class="bg-green-100 text-green-800 px-3 py-1 rounded-full hover:bg-green-200">{{ category }}</a>
-      {% endfor %}
-    </div>
-  {% endif %}
-
-  {% include author_box.html %}
-  {% include related_posts.html %}
-  {% include social_share.html %}
-
-  <a class="u-url" href="{{ page.url | relative_url }}" hidden></a>
-</article>
+<!-- Auto TOC via JS -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var headings = document.querySelectorAll('.prose h2, .prose h3');
+  if (headings.length < 2) return;
+  var toc = document.createElement('div');
+  toc.className = 'my-6 p-4 bg-gray-50 border border-gray-200 rounded-xl';
+  toc.innerHTML = '<p class="font-bold text-gray-800 mb-3 text-sm">📋 目录</p><ul class="space-y-1 text-sm" id="toc-list"></ul>';
+  var list = toc.querySelector('#toc-list');
+  headings.forEach(function(h, i) {
+    if (!h.id) h.id = 'heading-' + i;
+    var li = document.createElement('li');
+    li.className = h.tagName === 'H3' ? 'ml-4' : '';
+    li.innerHTML = '<a href="#' + h.id + '" class="text-blue-600 hover:underline">' + h.textContent + '</a>';
+    list.appendChild(li);
+  });
+  var prose = document.querySelector('.prose');
+  if (prose) prose.insertBefore(toc, prose.firstChild);
+});
+</script>
