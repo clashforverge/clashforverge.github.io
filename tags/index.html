@@ -1,0 +1,24 @@
+---
+layout: default
+title: "所有标签 | Clash Verge免费节点"
+description: "浏览所有文章标签，包括Clash Verge免费节点、订阅链接、机场推荐等分类标签。"
+keywords: "clash verge节点标签,clash verge免费节点,clash verge订阅链接"
+permalink: /tags/
+---
+<div class="max-w-5xl mx-auto px-4 py-8">
+  <h1 class="text-3xl font-extrabold text-gray-900 mb-6">所有标签</h1>
+  <div class="flex flex-wrap gap-3">
+    {% assign all_tags = site.posts | map: "tags" | join: "," | split: "," | uniq | sort %}
+    {% for tag in all_tags %}
+      {% assign tag_stripped = tag | strip %}
+      {% if tag_stripped != "" %}
+        {% assign tag_count = site.posts | where_exp: "post", "post.tags contains tag_stripped" | size %}
+        <a href="/tags/{{ tag_stripped | slugify }}/"
+           class="inline-flex items-center gap-1 bg-gray-100 hover:bg-blue-100 text-gray-700 hover:text-blue-700 px-3 py-1.5 rounded-full text-sm transition">
+          <span>#{{ tag_stripped }}</span>
+          <span class="text-xs text-gray-400">({{ tag_count }})</span>
+        </a>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
