@@ -1,0 +1,31 @@
+title: "Clash Verge 免费节点 | Clash Meta for Windows | 每日更新订阅链接"
+description: "提供最新Clash Verge免费节点、Clash Verge订阅链接免费获取、Clash Meta for Windows下载教程，每日更新clash verge机场推荐，稳定可用。"
+keywords: "clash verge免费节点,clash verge订阅链接免费,clash meta for windows,clash免费节点,clash verge每日免费节点,clash verge机场推荐,clash verge免费机场"
+author: "clashforverge"
+url: "https://clashforverge.github.io"
+baseurl: ""
+logo: "/assets/images/logo.png"
+social_links:
+  twitter: "#"
+  facebook: "#"
+  telegram: "#"
+  reddit: "#"
+  whatsapp: "#"
+indexnow:
+  key: "8575fe8139f14b2da85e40bbc8b86ce2"
+  host: "clashforverge.github.io"
+permalink: /:title/
+markdown: kramdown
+highlighter: rouge
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+  - jekyll-paginate
+paginate: 10
+paginate_path: /page:num/
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/
