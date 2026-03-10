@@ -1,0 +1,36 @@
+<footer class="bg-gray-900 text-gray-300 mt-12">
+  <div class="max-w-7xl mx-auto px-4 py-10">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+      <!-- About -->
+      <div>
+        <h3 class="text-white font-bold text-lg mb-3">{{ site.title }}</h3>
+        <p class="text-sm text-gray-400 leading-relaxed">{{ site.description }}</p>
+      </div>
+      <!-- Categories -->
+      <div>
+        <h3 class="text-white font-bold text-lg mb-3">分类导航</h3>
+        <ul class="space-y-2 text-sm">
+          {% for cat in site.categories %}
+          <li><a href="/categories/{{ cat[0] | slugify }}/" class="hover:text-white transition">{{ cat[0] }} ({{ cat[1].size }})</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      <!-- Recent Posts -->
+      <div>
+        <h3 class="text-white font-bold text-lg mb-3">最新文章</h3>
+        <ul class="space-y-2 text-sm">
+          {% for post in site.posts limit: 5 %}
+          <li><a href="{{ post.url | relative_url }}" class="hover:text-white transition line-clamp-1">{{ post.title | escape }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-gray-700 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-sm text-gray-500">
+      <p>&copy; {{ site.time | date: "%Y" }} {{ site.title }}. All rights reserved.</p>
+      <div class="flex gap-4">
+        <a href="/sitemap.xml" class="hover:text-white transition">Sitemap</a>
+        <a href="/robots.txt" class="hover:text-white transition">Robots</a>
+      </div>
+    </div>
+  </div>
+</footer>
