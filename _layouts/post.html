@@ -100,6 +100,12 @@ layout: default
     <!-- Sidebar -->
     <aside class="w-full lg:w-72 flex-shrink-0 space-y-6">
 
+      <!-- TOC -->
+      <div id="toc-container" class="hidden lg:block bg-white rounded-2xl shadow-sm p-5 sticky top-4">
+        <h3 class="text-base font-bold text-gray-900 mb-4 pb-2 border-b border-gray-100">📋 文章目录</h3>
+        <ul id="toc-list-sidebar" class="space-y-2 text-sm max-h-[80vh] overflow-y-auto"></ul>
+      </div>
+
       <!-- Latest Posts -->
       <div class="bg-white rounded-2xl shadow-sm p-5 sticky top-4">
         <h3 class="text-base font-bold text-gray-900 mb-4 pb-2 border-b border-gray-100">最新文章</h3>
@@ -150,20 +156,41 @@ layout: default
 <!-- Auto TOC via JS -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  var headings = document.querySelectorAll('.prose h2, .prose h3');
-  if (headings.length < 2) return;
-  var toc = document.createElement('div');
-  toc.className = 'my-6 p-4 bg-gray-50 border border-gray-200 rounded-xl';
-  toc.innerHTML = '<p class="font-bold text-gray-800 mb-3 text-sm">📋 目录</p><ul class="space-y-1 text-sm" id="toc-list"></ul>';
-  var list = toc.querySelector('#toc-list');
+  var headings = Array.from(document.querySelectorAll('.prose h2, .prose h3'));
+  var tocContainer = document.getElementById('toc-container');
+  var tocList = document.getElementById('toc-list-sidebar');
+
+  if (headings.length < 2 || !tocContainer || !tocList) {
+    if(tocContainer) tocContainer.style.display = 'none';
+    return;
+  }
+
+  tocContainer.classList.remove('hidden');
+
   headings.forEach(function(h, i) {
     if (!h.id) h.id = 'heading-' + i;
     var li = document.createElement('li');
     li.className = h.tagName === 'H3' ? 'ml-4' : '';
-    li.innerHTML = '<a href="#' + h.id + '" class="text-blue-600 hover:underline">' + h.textContent + '</a>';
-    list.appendChild(li);
+    var link = document.createElement('a');
+    link.href = '#' + h.id;
+    link.textContent = h.textContent;
+    link.className = 'text-gray-600 hover:text-blue-600 hover:underline transition-colors duration-200';
+    li.appendChild(link);
+    tocList.appendChild(li);
   });
-  var prose = document.querySelector('.prose');
-  if (prose) prose.insertBefore(toc, prose.firstChild);
+
+  // Bonus: Active link highlighting on scroll
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      var id = entry.target.getAttribute('id');
+      var tocLink = tocList.querySelector('a[href="#' + id + '"]');
+      if (entry.isIntersecting) {
+        tocList.querySelectorAll('a').forEach(a => a.classList.remove('text-blue-600', 'font-semibold'));
+        tocLink.classList.add('text-blue-600', 'font-semibold');
+      }
+    });
+  }, { rootMargin: '-20% 0px -80% 0px' });
+
+  headings.forEach(h => observer.observe(h));
 });
 </script>
