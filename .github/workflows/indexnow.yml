@@ -1,6 +1,7 @@
-name: IndexNow - Submit New Posts to Bing
+name: IndexNow - Submit All Posts to Bing
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -13,40 +14,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
 
-      - name: Get new or modified posts
-        id: get-posts
-        run: |
-          CHANGED=$(git diff --name-only HEAD~1 HEAD -- "_posts/" 2>/dev/null || git show --name-only --format="" HEAD -- "_posts/")
-          echo "Changed files: $CHANGED"
-          URLS=""
-          for file in $CHANGED; do
-            if [ -f "$file" ]; then
-              PERMALINK=$(grep -m1 "^permalink:" "$file" | sed 's/permalink: *//;s/["']//g;s/^ *//;s/ *$//')
-              if [ -n "$PERMALINK" ]; then
-                URL="https://clashforverge.github.io${PERMALINK}"
-              else
-                BASENAME=$(basename "$file" .md)
-                SLUG=$(echo "$BASENAME" | sed 's/^[0-9]*-[0-9]*-[0-9]*-//')
-                URL="https://clashforverge.github.io/${SLUG}/"
-              fi
-              echo "URL: $URL"
-              if [ -z "$URLS" ]; then URLS="\"$URL\""; else URLS="$URLS, \"$URL\""; fi
-            fi
-          done
-          echo "urls=$URLS" >> $GITHUB_OUTPUT
-          echo "has_urls=$([ -n "$URLS" ] && echo true || echo false)" >> $GITHUB_OUTPUT
-
-      - name: Submit to IndexNow (Bing)
-        if: steps.get-posts.outputs.has_urls == 'true'
-        run: |
-          URLS="${{ steps.get-posts.outputs.urls }}"
-          echo "Submitting: $URLS"
-          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "https://api.indexnow.org/indexnow" \
-            -H "Content-Type: application/json; charset=utf-8" \
-            -d "{\"host\": \"clashforverge.github.io\", \"key\": \"8575fe8139f14b2da85e40bbc8b86ce2\", \"keyLocation\": \"https://clashforverge.github.io/8575fe8139f14b2da85e40bbc8b86ce2.txt\", \"urlList\": [$URLS]}")
-          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
-          echo "Response: $HTTP_CODE"
-          [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "202" ] && echo "✅ Success!" || echo "⚠️ Code: $HTTP_CODE"
+      - name: Submit all posts to IndexNow
+        run: python3 scripts/submit_indexnow.py
