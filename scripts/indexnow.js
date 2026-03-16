@@ -2,7 +2,7 @@
 const fetch = require("node-fetch");
 
 const INDEXNOW_CONFIG = {
-  host: "clashwindow.github.io",
+  host: "clashforverge.github.io",
   key: "8575fe8139f14b2da85e40bbc8b86ce2",
   urlList: [] // This will be populated dynamically
 };

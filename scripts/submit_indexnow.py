@@ -4,9 +4,15 @@ import json
 import urllib.request
 import urllib.error
 
-SITE_URL = "https://clashforverge.github.io"
-KEY = "8575fe8139f14b2da85e40bbc8b86ce2"
-HOST = "clashforverge.github.io"
+import yaml
+
+# Load _config.yml to get IndexNow settings
+with open('_config.yml', 'r', encoding='utf-8') as f:
+    config = yaml.safe_load(f)
+
+SITE_URL = config.get('url', 'https://clashforverge.github.io')
+KEY = config.get('indexnow', {}).get('key', 'YOUR_INDEXNOW_KEY') # Fallback to a placeholder
+HOST = config.get('indexnow', {}).get('host', 'clashforverge.github.io')
 
 posts_dir = "_posts"
 if not os.path.isdir(posts_dir):
@@ -51,7 +57,7 @@ for i in range(0, len(urls), BATCH):
     payload = json.dumps({
         "host": HOST,
         "key": KEY,
-        "keyLocation": SITE_URL + "/" + KEY + ".txt",
+        "keyLocation": SITE_URL + config.get("indexnow", {}).get("key_location", "/" + KEY + ".txt"),
         "urlList": batch
     }).encode("utf-8")
     req = urllib.request.Request(
