@@ -134,7 +134,7 @@
 
   <link rel="alternate" type="application/rss+xml" title="{{ site.title | escape }}" href="{{ '/feed.xml' | relative_url }}">
   
-  <!-- 改进的弹窗样式：添加模糊背景效果 -->
+  <!-- 改进的弹窗样式：添加模糊背景效果和移动端适配 -->
   <style>
     #popupOverlay {
       display: none;
@@ -150,6 +150,8 @@
       align-items: center;
       justify-content: center;
       z-index: 999;
+      padding: 10px;
+      box-sizing: border-box;
     }
     
     #popupOverlay.show {
@@ -165,6 +167,9 @@
       text-align: center;
       position: relative;
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      box-sizing: border-box;
+      max-height: 90vh;
+      overflow-y: auto;
     }
     
     .popup-close-btn {
@@ -182,28 +187,87 @@
       cursor: pointer;
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
       transition: background 0.3s;
+      flex-shrink: 0;
+      touch-action: manipulation;
     }
     
     .popup-close-btn:hover {
       background: #d32f2f;
     }
     
+    .popup-close-btn:active {
+      transform: scale(0.95);
+    }
+    
     .popup-link {
       text-decoration: none;
       color: inherit;
+      display: block;
     }
     
     .popup-title {
       margin: 0 0 10px;
       font-size: 26px;
       color: red;
+      word-wrap: break-word;
+      word-break: break-word;
     }
     
     .popup-image {
-      width: 300px;
-      height: 290px;
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+      aspect-ratio: 300 / 290;
       display: block;
       margin: 0 auto 15px;
+      border-radius: 8px;
+    }
+    
+    /* 移动端适配 */
+    @media (max-width: 480px) {
+      #popupOverlay {
+        padding: 15px;
+      }
+      
+      .popup-content {
+        width: 100%;
+        padding: 15px 20px;
+        border-radius: 10px;
+      }
+      
+      .popup-close-btn {
+        top: -12px;
+        right: -12px;
+        width: 36px;
+        height: 36px;
+        font-size: 20px;
+      }
+      
+      .popup-title {
+        font-size: 18px;
+        margin: 0 0 8px;
+      }
+      
+      .popup-image {
+        max-width: 100%;
+        margin: 0 auto 10px;
+      }
+    }
+    
+    @media (max-width: 360px) {
+      .popup-content {
+        padding: 12px 15px;
+      }
+      
+      .popup-title {
+        font-size: 16px;
+        margin: 0 0 6px;
+      }
+      
+      .popup-image {
+        max-width: 90%;
+        margin: 0 auto 8px;
+      }
     }
   </style>
 
