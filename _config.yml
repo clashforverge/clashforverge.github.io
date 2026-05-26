@@ -18,6 +18,7 @@ indexnow:
   key_location: "/8575fe8139f14b2da85e40bbc8b86ce2.txt"
 permalink: /:title/
 markdown: kramdown
+timezone: Asia/Shanghai
 highlighter: rouge
 plugins:
   - jekyll-feed
