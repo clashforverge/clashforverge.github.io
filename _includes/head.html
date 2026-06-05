@@ -10,7 +10,7 @@
     - <meta property="og:*">
     - <meta name="twitter:*">
     - <link rel="canonical">
-    所以这里不再手动写 these 标签，避免重复。
+    所以这里不再手动写这些标签，避免重复。
   {%- endcomment -%}
 
   {% if page.keywords and page.keywords != "" %}
@@ -134,141 +134,231 @@
 
   <link rel="alternate" type="application/rss+xml" title="{{ site.title | escape }}" href="{{ '/feed.xml' | relative_url }}">
   
-  <!-- 弹窗样式 -->
+  <!-- 改进的弹窗样式：添加模糊背景效果和移动端适配 -->
   <style>
-    #yxpopup-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, .8);
-        z-index: 9999;
-        justify-content: center;
-        align-items: center;
-        backdrop-filter: blur(8px);
+    #popupOverlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      padding: 10px;
+      box-sizing: border-box;
     }
-    .yxpopup-box {
-        position: relative;
-        background: #fff;
-        width: 420px;
-        border-radius: 20px;
-        padding: 25px 20px;
-        text-align: center;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, .3);
-        animation: yxpopupAnim .4s cubic-bezier(.175, .885, .32, 1.275);
+    
+    #popupOverlay.show {
+      display: flex;
     }
-    .yxpopup-close {
-        position: absolute;
-        top: 12px;
-        right: 12px;
+    
+    .popup-content {
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 12px;
+      max-width: 100%;
+      width: 370px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      box-sizing: border-box;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .popup-close-btn {
+      position: absolute;
+      top: -15px;
+      right: -15px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #f44336;
+      border: none;
+      font-size: 24px;
+      font-weight: bold;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      transition: background 0.3s;
+      flex-shrink: 0;
+      touch-action: manipulation;
+    }
+    
+    .popup-close-btn:hover {
+      background: #d32f2f;
+    }
+    
+    .popup-close-btn:active {
+      transform: scale(0.95);
+    }
+    
+    .popup-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    
+    .popup-title {
+      margin: 0 0 10px;
+      font-size: 26px;
+      color: red;
+      word-wrap: break-word;
+      word-break: break-word;
+    }
+    
+    .popup-image {
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+      aspect-ratio: 300 / 290;
+      display: block;
+      margin: 0 auto 15px;
+      border-radius: 8px;
+    }
+    
+    /* 移动端适配 */
+    @media (max-width: 768px) {
+      .popup-content {
+        width: 90%;
+        max-width: 320px;
+        padding: 12px 16px;
+        border-radius: 10px;
+      }
+      
+      .popup-title {
+        font-size: 16px;
+        margin: 0 0 8px;
+        line-height: 1.3;
+      }
+      
+      .popup-image {
+        max-width: 100%;
+        max-height: 200px;
+        margin: 0 auto 10px;
+      }
+      
+      .popup-close-btn {
+        top: -10px;
+        right: -10px;
         width: 32px;
         height: 32px;
-        background: #f1f1f1;
-        border: none;
-        border-radius: 50%;
-        font-size: 20px;
-        color: #666;
-        cursor: pointer;
-        transition: all .3s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        line-height: 1;
-        z-index: 1010;
+        font-size: 18px;
+      }
     }
-    .yxpopup-close:hover {
-        background: #e5e5e5;
-        color: #333;
-    }
-    .yxpopup-link {
-        text-decoration: none;
-        display: block;
-        position: relative;
-        z-index: 1000;
-    }
-    .yxpopup-title {
-        font-size: 24px;
-        font-weight: 700;
-        color: #333;
-        margin-bottom: 20px;
-        background: linear-gradient(45deg, #ff416c, #ff4b2b);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-    .yxpopup-image {
-        width: 100%;
-        height: auto;
-        border-radius: 12px;
-        transition: transform .3s;
-    }
-    .yxpopup-link:hover .yxpopup-image {
-        transform: scale(1.02);
-    }
-    @keyframes yxpopupAnim {
-        from {
-            opacity: 0;
-            transform: scale(.92);
-        }
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
-    }
+    
     @media (max-width: 480px) {
-        .yxpopup-box {
-            width: 95%;
-            padding: 18px 15px;
-        }
-        .yxpopup-title {
-            font-size: 22px;
-        }
+      #popupOverlay {
+        padding: 10px;
+      }
+      
+      .popup-content {
+        width: 85%;
+        max-width: 280px;
+        padding: 10px 14px;
+      }
+      
+      .popup-title {
+        font-size: 14px;
+        margin: 0 0 6px;
+        line-height: 1.2;
+      }
+      
+      .popup-image {
+        max-width: 100%;
+        max-height: 160px;
+        margin: 0 auto 8px;
+      }
+      
+      .popup-close-btn {
+        top: -8px;
+        right: -8px;
+        width: 28px;
+        height: 28px;
+        font-size: 16px;
+      }
+    }
+    
+    @media (max-width: 360px) {
+      .popup-content {
+        width: 80%;
+        max-width: 240px;
+        padding: 8px 12px;
+      }
+      
+      .popup-title {
+        font-size: 12px;
+        margin: 0 0 4px;
+        line-height: 1.2;
+      }
+      
+      .popup-image {
+        max-width: 100%;
+        max-height: 140px;
+        margin: 0 auto 6px;
+      }
+      
+      .popup-close-btn {
+        top: -6px;
+        right: -6px;
+        width: 24px;
+        height: 24px;
+        font-size: 14px;
+      }
     }
   </style>
 
   <!-- 弹窗 HTML 结构 -->
-  <div id="yxpopup-overlay">
-    <div class="yxpopup-box">
-      <button aria-label="关闭" class="yxpopup-close" id="yxpopup-close-btn">×</button>
-      <a class="yxpopup-link" href="https://yawtt.net/register?code=PCC6A3bC/" rel="nofollow noopener" target="_blank">
-        <p class="yxpopup-title">半仙加速器国内访问海外2026/4月份正常使用</p>
-        <img alt="机场地址" class="yxpopup-image" src="https://clash-for-android.github.io/img/2025091511003119.png"/>
-      </a>
+  <div id="popupOverlay">
+    <div class="popup-content">
+      <div class="space-y-4">
+        <a href="https://ml.yfqz1.net/register?code=PCC6A3bC" target="_blank" class="popup-link block group">
+          <p class="popup-title group-hover:text-blue-600 transition">半仙加速器国内访问海外2026/4月份正常使用</p>
+          <img src="https://clash-for-android.github.io/img/2025091511003119.png" alt="机场地址" class="popup-image mx-auto">
+        </a>
+        <div class="pt-4 border-t border-gray-100">
+          <a href="http://shop.xinkonyun.cc/" target="_blank" class="inline-block w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 shadow-md">
+            🛒 购买 Shadowrocket 独享账号/海外其他账号
+          </a>
+        </div>
+      </div>
+      <button class="popup-close-btn" id="popupCloseBtn">×</button>
     </div>
   </div>
 
   <!-- 弹窗控制脚本 -->
   <script>
     (function() {
-        var overlay = document.getElementById('yxpopup-overlay');
-        var closeBtn = document.getElementById('yxpopup-close-btn');
-        var targetUrl = "https://bxvpn6.top/index.html?share=ESF3UL#/";
-        function openPopup() {
-            if (overlay) overlay.style.display = 'flex';
+      const popupOverlay = document.getElementById('popupOverlay');
+      const popupCloseBtn = document.getElementById('popupCloseBtn');
+      const popupLink = document.getElementById('popupLink');
+      
+      // 页面加载完成后显示弹窗
+      window.addEventListener('DOMContentLoaded', function() {
+        popupOverlay.classList.add('show');
+      });
+      
+      // 关闭按钮点击事件：关闭弹窗
+      popupCloseBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        // 关闭弹窗
+        popupOverlay.classList.remove('show');
+      });
+      
+      // 移除背景遮罩点击关闭的逻辑
+      // 现在点击背景不会关闭弹窗，实现强制引导效果
+      popupOverlay.addEventListener('click', function(e) {
+        // 只有点击关闭按钮才能关闭弹窗
+        if (e.target === popupOverlay) {
+          e.stopPropagation();
         }
-        // 页面加载后显示弹窗
-        window.addEventListener('load', function() {
-            setTimeout(openPopup, 300);
-        });
-        // 核心逻辑：点击关闭按钮，先在新窗口打开目标链接，然后关闭弹窗
-        if (closeBtn) {
-            closeBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                // 在新窗口打开目标网页
-                window.open(targetUrl, '_blank');
-                // 关闭当前弹窗
-                if (overlay) overlay.style.display = 'none';
-            });
-        }
-        // 核心逻辑：点击遮罩层不关闭弹窗
-        if (overlay) {
-            overlay.addEventListener('click', function(e) {
-                // 点击背景时不执行任何操作，弹窗保持显示
-                e.stopPropagation();
-            });
-        }
+      });
     })();
   </script>
 </head>
