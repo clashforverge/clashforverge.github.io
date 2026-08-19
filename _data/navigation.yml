@@ -1,11 +1,10 @@
-
-- name: Home
+- name: 首页
   link: /
-- name: Technology
-  link: /categories/technology/
-- name: Science
-  link: /categories/science/
-- name: Lifestyle
-  link: /categories/lifestyle/
-- name: Tags
+- name: 入门路线
+  link: /#start
+- name: 客户端
+  link: /#clients
+- name: 排错速查
+  link: /#troubleshoot
+- name: 全部文章
   link: /tags/

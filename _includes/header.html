@@ -1,34 +1,66 @@
+<header id="siteHeader" class="sticky top-0 z-50 border-b border-slate-200/70 bg-white/80 backdrop-blur-xl transition-shadow duration-300">
+  <div class="mx-auto flex h-[4.5rem] max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <a href="{{ '/' | relative_url }}" class="group flex items-center gap-3 py-4" aria-label="{{ site.title }} 首页">
+      <span class="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl bg-ink shadow-lg shadow-blue-950/20">
+        <span class="absolute h-5 w-5 rotate-45 border border-cyan-200/70"></span>
+        <span class="relative h-1.5 w-1.5 rounded-full bg-cyan-300"></span>
+      </span>
+      <span>
+        <span class="block text-sm font-extrabold tracking-tight text-ink">ClashForVerge</span>
+        <span class="block font-mono text-[10px] tracking-[.14em] text-sky-600">GUIDES · NOTES · TOOLS</span>
+      </span>
+    </a>
 
-<header class="bg-white shadow-md">
-  <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-    <a class="text-2xl font-bold text-gray-900 hover:text-blue-600" href="{{ "/" | relative_url }}">{{ site.title | escape }}</a>
-
-    <nav class="hidden md:block">
-      <ul class="flex space-x-4">
-        {% for item in site.data.navigation %}
-          <li><a class="text-gray-700 hover:text-blue-600 font-medium" href="{{ item.link | relative_url }}">{{ item.name }}</a></li>
-        {% endfor %}
-      </ul>
+    <nav class="hidden items-center gap-1 lg:flex" aria-label="主导航">
+      {% for item in site.data.navigation %}
+        <a href="{{ item.link | relative_url }}" class="rounded-lg px-3 py-2 text-sm font-semibold transition {% if page.url == item.link %}bg-blue-50 text-blue-700{% else %}text-slate-600 hover:bg-slate-100 hover:text-ink{% endif %}">{{ item.name }}</a>
+      {% endfor %}
     </nav>
 
-    <div class="md:hidden">
-      <button id="menu-toggle" class="text-gray-700 hover:text-blue-600 focus:outline-none">
-        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+    <div class="flex items-center gap-2">
+      <button id="themeToggle" type="button" class="hidden h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-600 transition hover:border-blue-200 hover:bg-blue-50 sm:inline-flex" aria-label="切换显示主题">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 3v2m0 14v2M3 12h2m14 0h2M5.6 5.6 7 7m10 10 1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"/><circle cx="12" cy="12" r="4"/></svg>
+      </button>
+      <button id="menuToggle" type="button" class="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 text-slate-700 transition hover:bg-slate-100 lg:hidden" aria-expanded="false" aria-controls="mobileMenu" aria-label="打开导航菜单">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
     </div>
   </div>
 
-  <div id="mobile-menu" class="md:hidden hidden bg-white shadow-lg">
-    <ul class="flex flex-col space-y-2 px-4 py-2">
+  <div id="mobileMenu" class="hidden border-t border-slate-100 bg-white px-4 py-3 lg:hidden">
+    <nav class="mx-auto grid max-w-7xl gap-1" aria-label="移动端主导航">
       {% for item in site.data.navigation %}
-        <li><a class="block text-gray-700 hover:text-blue-600 font-medium py-2" href="{{ item.link | relative_url }}">{{ item.name }}</a></li>
+        <a href="{{ item.link | relative_url }}" class="rounded-lg px-3 py-3 text-sm font-semibold text-slate-700 hover:bg-blue-50 hover:text-blue-700">{{ item.name }}</a>
       {% endfor %}
-    </ul>
+    </nav>
   </div>
-
-  <script>
-    document.getElementById('menu-toggle').addEventListener('click', function() {
-      document.getElementById('mobile-menu').classList.toggle('hidden');
-    });
-  </script>
 </header>
+
+<script>
+  (() => {
+    const root = document.documentElement;
+    const header = document.getElementById('siteHeader');
+    const toggle = document.getElementById('themeToggle');
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const savedTheme = localStorage.getItem('cfv-theme');
+
+    if (savedTheme === 'dark') root.dataset.theme = 'dark';
+    const setHeaderState = () => header.classList.toggle('shadow-sm', window.scrollY > 12);
+    setHeaderState();
+    window.addEventListener('scroll', setHeaderState, { passive: true });
+
+    toggle?.addEventListener('click', () => {
+      const nextTheme = root.dataset.theme === 'dark' ? 'light' : 'dark';
+      if (nextTheme === 'dark') root.dataset.theme = 'dark';
+      else delete root.dataset.theme;
+      localStorage.setItem('cfv-theme', nextTheme);
+    });
+
+    menuToggle?.addEventListener('click', () => {
+      const open = mobileMenu.classList.toggle('hidden') === false;
+      menuToggle.setAttribute('aria-expanded', String(open));
+      menuToggle.setAttribute('aria-label', open ? '关闭导航菜单' : '打开导航菜单');
+    });
+  })();
+</script>

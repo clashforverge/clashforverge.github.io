@@ -1,36 +1,40 @@
-<footer class="bg-gray-900 text-gray-300 mt-12">
-  <div class="max-w-7xl mx-auto px-4 py-10">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-      <!-- About -->
-      <div>
-        <h3 class="text-white font-bold text-lg mb-3">{{ site.title }}</h3>
-        <p class="text-sm text-gray-400 leading-relaxed">{{ site.description }}</p>
+<footer class="overflow-hidden bg-ink text-blue-100">
+  <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+    <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+      <div class="lg:col-span-2">
+        <div class="mb-4 flex items-center gap-3">
+          <span class="relative flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl border border-cyan-200/30 bg-white/10">
+            <span class="absolute h-5 w-5 rotate-45 border border-cyan-200/70"></span><span class="relative h-1.5 w-1.5 rounded-full bg-cyan-300"></span>
+          </span>
+          <span class="text-lg font-extrabold text-white">ClashForVerge</span>
+        </div>
+        <p class="max-w-md text-sm leading-7 text-blue-200/75">面向日常使用者的客户端笔记与配置参考。我们关注安装、导入、更新和排错等实际问题，让每一次调整都有清晰的依据。</p>
+        <p class="mt-4 max-w-md text-xs leading-6 text-blue-300/60">本站内容仅用于软件使用与网络知识交流；请在遵守所在地法律法规、平台条款及服务商规则的前提下使用相关工具。</p>
       </div>
-      <!-- Categories -->
+
       <div>
-        <h3 class="text-white font-bold text-lg mb-3">分类导航</h3>
-        <ul class="space-y-2 text-sm">
-          {% for cat in site.categories %}
-          <li><a href="/categories/{{ cat[0] | slugify }}/" class="hover:text-white transition">{{ cat[0] }} ({{ cat[1].size }})</a></li>
-          {% endfor %}
+        <h2 class="mb-4 text-sm font-bold text-white">内容入口</h2>
+        <ul class="space-y-3 text-sm text-blue-200/75">
+          <li><a href="{{ '/tags/#教程' | relative_url }}" class="transition hover:text-cyan-200">新手配置教程</a></li>
+          <li><a href="{{ '/tags/#配置' | relative_url }}" class="transition hover:text-cyan-200">配置与排错</a></li>
+          <li><a href="{{ '/tags/#下载' | relative_url }}" class="transition hover:text-cyan-200">客户端与版本</a></li>
+          <li><a href="{{ '/tags/' | relative_url }}" class="transition hover:text-cyan-200">所有主题标签</a></li>
         </ul>
       </div>
-      <!-- Recent Posts -->
+
       <div>
-        <h3 class="text-white font-bold text-lg mb-3">最新文章</h3>
-        <ul class="space-y-2 text-sm">
-          {% for post in site.posts limit: 5 %}
-          <li><a href="{{ post.url | relative_url }}" class="hover:text-white transition line-clamp-1">{{ post.title | escape }}</a></li>
+        <h2 class="mb-4 text-sm font-bold text-white">最近更新</h2>
+        <ul class="space-y-3 text-sm text-blue-200/75">
+          {% for post in site.posts limit: 3 %}
+            <li><a href="{{ post.url | relative_url }}" class="line-clamp-2 transition hover:text-cyan-200">{{ post.title | escape }}</a></li>
           {% endfor %}
         </ul>
       </div>
     </div>
-    <div class="border-t border-gray-700 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-sm text-gray-500">
-      <p>&copy; {{ site.time | date: "%Y" }} {{ site.title }}. All rights reserved.</p>
-      <div class="flex gap-4">
-        <a href="/sitemap.xml" class="hover:text-white transition">Sitemap</a>
-        <a href="/robots.txt" class="hover:text-white transition">Robots</a>
-      </div>
+
+    <div class="mt-12 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-blue-300/60 sm:flex-row sm:items-center sm:justify-between">
+      <p>© {{ site.time | date: "%Y" }} {{ site.title }}. Built for clearer client setup.</p>
+      <div class="flex gap-5"><a href="{{ '/sitemap.xml' | relative_url }}" class="hover:text-white">站点地图</a><a href="{{ '/feed.xml' | relative_url }}" class="hover:text-white">RSS</a><a href="{{ '/robots.txt' | relative_url }}" class="hover:text-white">Robots</a></div>
     </div>
   </div>
 </footer>

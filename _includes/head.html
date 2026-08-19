@@ -2,345 +2,97 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  {%- comment -%}
-    jekyll-seo-tag 会自动生成：
-    - <title>
-    - <meta name="description">
-    - <meta property="og:*">
-    - <meta name="twitter:*">
-    - <link rel="canonical">
-    所以这里不再手动写这些标签，避免重复。
-  {%- endcomment -%}
-
   {% if page.keywords and page.keywords != "" %}
-  <meta name="keywords" content="{{ page.keywords | escape }}">
+    <meta name="keywords" content="{{ page.keywords | escape }}">
   {% elsif site.keywords %}
-  <meta name="keywords" content="{{ site.keywords | escape }}">
+    <meta name="keywords" content="{{ site.keywords | escape }}">
   {% endif %}
-
   <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#071b38">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-  {%- comment -%} Tailwind CSS CDN with Typography plugin {%- endcomment -%}
   <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
-          typography: {
-            DEFAULT: {
-              css: {
-                maxWidth: 'none',
-                color: '#374151',
-                a: { color: '#2563eb', textDecoration: 'none' },
-                'a:hover': { textDecoration: 'underline' },
-                h2: { color: '#111827', fontWeight: '700' },
-                h3: { color: '#1f2937', fontWeight: '600' },
-                img: { borderRadius: '0.75rem' },
-              }
-            }
+          fontFamily: {
+            sans: ['Noto Sans SC', 'system-ui', 'sans-serif'],
+            mono: ['DM Mono', 'monospace']
+          },
+          colors: {
+            ink: '#071b38',
+            ocean: '#123b7a',
+            signal: '#2f9bff',
+            mist: '#eef6ff'
+          },
+          boxShadow: {
+            soft: '0 18px 50px rgba(8, 40, 83, 0.12)',
+            glow: '0 16px 40px rgba(47, 155, 255, 0.26)'
           }
         }
       }
     }
   </script>
 
-  {%- comment -%} JSON-LD 结构化数据（jekyll-seo-tag 不生成，需手动添加）{%- endcomment -%}
   {% if page.layout == 'post' %}
-  {%- assign post_desc = "" -%}
-  {%- if page.description and page.description != "" -%}
-    {%- assign post_desc = page.description | escape -%}
-  {%- elsif page.excerpt -%}
-    {%- assign post_desc = page.excerpt | strip_html | strip_newlines | truncate: 155 | escape -%}
-  {%- else -%}
-    {%- assign post_desc = site.description | escape -%}
-  {%- endif -%}
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "NewsArticle",
-    "headline": "{{ page.title | escape }}",
-    "datePublished": "{{ page.date | date_to_xmlschema }}",
-    "dateModified": "{{ page.last_modified_at | default: page.date | date_to_xmlschema }}",
-    "description": "{{ post_desc }}",
-    "author": {
-      "@type": "Person",
-      "name": "{% if page.author %}{{ page.author | escape }}{% else %}{{ site.author | escape }}{% endif %}"
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "{{ site.title | escape }}",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "{{ site.url }}{{ site.logo }}"
-      }
-    },
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "{{ page.url | absolute_url }}"
+    {% assign post_desc = page.description | default: page.excerpt | default: site.description | strip_html | strip_newlines | truncate: 155 %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "{{ page.title | escape }}",
+      "datePublished": "{{ page.date | date_to_xmlschema }}",
+      "dateModified": "{{ page.last_modified_at | default: page.date | date_to_xmlschema }}",
+      "description": "{{ post_desc | escape }}",
+      "author": {"@type": "Organization", "name": "{{ site.author | escape }}"},
+      "publisher": {"@type": "Organization", "name": "{{ site.title | escape }}"},
+      "mainEntityOfPage": {"@type": "WebPage", "@id": "{{ page.url | absolute_url }}"}
     }
-  }
-  </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "首页",
-        "item": "{{ site.url }}"
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "{{ page.title | escape }}",
-        "item": "{{ page.url | absolute_url }}"
-      }
-    ]
-  }
-  </script>
+    </script>
   {% else %}
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "url": "{{ site.url }}",
-    "name": "{{ site.title | escape }}",
-    "description": "{{ site.description | escape }}"
-  }
-  </script>
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "url": "{{ site.url }}",
-    "name": "{{ site.title | escape }}",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "{{ site.url }}/search?q={search_term_string}",
-      "query-input": "required name=search_term_string"
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "url": "{{ site.url }}",
+      "name": "{{ site.title | escape }}",
+      "description": "{{ site.description | escape }}"
     }
-  }
-  </script>
+    </script>
   {% endif %}
 
-  {%- comment -%}
-    jekyll-seo-tag 插件：自动生成 title、description、og、twitter card、canonical
-    必须放在所有手动 meta 之后，避免被覆盖
-  {%- endcomment -%}
   {% seo %}
-
   <link rel="alternate" type="application/rss+xml" title="{{ site.title | escape }}" href="{{ '/feed.xml' | relative_url }}">
-  
-  <!-- 改进的弹窗样式：添加模糊背景效果和移动端适配 -->
+
   <style>
-    #popupOverlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 999;
-      padding: 10px;
-      box-sizing: border-box;
-    }
-    
-    #popupOverlay.show {
-      display: flex;
-    }
-    
-    .popup-content {
-      background: #fff;
-      padding: 20px 30px;
-      border-radius: 12px;
-      max-width: 100%;
-      width: 370px;
-      text-align: center;
-      position: relative;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-      box-sizing: border-box;
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-    
-    .popup-close-btn {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: rgba(0, 0, 0, 0.1);
-      border: none;
-      font-size: 20px;
-      font-weight: bold;
-      color: #999;
-      cursor: pointer;
-      transition: all 0.3s;
-      flex-shrink: 0;
-      touch-action: manipulation;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      line-height: 1;
-      z-index: 10;
-    }
-    
-    .popup-close-btn:hover {
-      background: #f44336;
-      color: #fff;
-    }
-    
-    .popup-close-btn:hover {
-      background: #d32f2f;
-    }
-    
-    .popup-close-btn:active {
-      transform: scale(0.95);
-    }
-    
-    .popup-link {
-      text-decoration: none;
-      color: inherit;
-      display: block;
-    }
-    
-    .popup-title {
-      margin: 0 0 10px;
-      font-size: 26px;
-      color: red;
-      word-wrap: break-word;
-      word-break: break-word;
-    }
-    
-    .popup-image {
-      width: 100%;
-      max-width: 300px;
-      height: auto;
-      aspect-ratio: 300 / 290;
-      display: block;
-      margin: 0 auto 15px;
-      border-radius: 8px;
-    }
-    
-    /* 移动端适配 */
-    @media (max-width: 768px) {
-      .popup-content {
-        width: 90%;
-        max-width: 320px;
-        padding: 12px 16px;
-        border-radius: 10px;
-      }
-      
-      .popup-title {
-        font-size: 16px;
-        margin: 0 0 8px;
-        line-height: 1.3;
-      }
-      
-      .popup-image {
-        max-width: 100%;
-        max-height: 200px;
-        margin: 0 auto 10px;
-      }
-      
-      .popup-close-btn {
-        top: 5px;
-        right: 5px;
-        width: 28px;
-        height: 28px;
-        font-size: 18px;
-      }
-    }
-    
-    @media (max-width: 480px) {
-      #popupOverlay {
-        padding: 10px;
-        align-items: center; /* 确保垂直居中 */
-      }
-      
-      .popup-content {
-        width: 95%; /* 增加宽度利用率 */
-        max-width: 320px;
-        padding: 15px 20px;
-      }
-      
-      .popup-title {
-        font-size: 18px; /* 调大标题 */
-        margin: 0 0 10px;
-        line-height: 1.3;
-      }
-      
-      .popup-image {
-        max-width: 100%;
-        max-height: 220px;
-        margin: 0 auto 12px;
-      }
-      
-      .popup-close-btn {
-        top: 5px;
-        right: 5px;
-        width: 24px;
-        height: 24px;
-        font-size: 16px;
-      }
-    }
+    :root { --ink: #071b38; --ocean: #123b7a; --signal: #2f9bff; --mist: #eef6ff; --line: rgba(18,59,122,.12); }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 96px; }
+    body { margin: 0; font-family: 'Noto Sans SC', system-ui, sans-serif; color: #13233d; background: #f7fbff; }
+    body::selection { background: #bde7ff; color: #071b38; }
+    a { text-decoration: none; }
+    .site-main { min-height: 70vh; }
+    .site-grid { background-image: linear-gradient(rgba(47,155,255,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(47,155,255,.055) 1px, transparent 1px); background-size: 28px 28px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: .55rem; font: 500 .74rem/1 'DM Mono', monospace; letter-spacing: .12em; text-transform: uppercase; color: #287fd2; }
+    .eyebrow::before { content: ''; width: 1.8rem; height: 1px; background: currentColor; }
+    .section-heading { max-width: 43rem; }
+    .section-heading h2 { margin: .65rem 0 .9rem; color: #071b38; font-size: clamp(1.85rem, 3.2vw, 2.8rem); line-height: 1.18; font-weight: 800; letter-spacing: -.04em; }
+    .section-heading p { margin: 0; color: #5e708c; line-height: 1.85; }
+    .button-primary, .button-secondary { display: inline-flex; align-items: center; justify-content: center; gap: .55rem; border-radius: .85rem; padding: .85rem 1.1rem; font-weight: 700; transition: transform .2s ease, box-shadow .2s ease, background .2s ease; }
+    .button-primary { color: #06234b; background: linear-gradient(135deg, #67e8f9, #60a5fa); box-shadow: 0 12px 30px rgba(63, 183, 255, .26); }
+    .button-secondary { color: #d7edff; border: 1px solid rgba(176,221,255,.3); background: rgba(255,255,255,.07); }
+    .button-primary:hover, .button-secondary:hover { transform: translateY(-2px); }
+    .button-primary:focus-visible, .button-secondary:focus-visible, a:focus-visible, button:focus-visible { outline: 3px solid #67e8f9; outline-offset: 3px; }
+    .article-prose { color: #374b68; font-size: 1rem; line-height: 1.9; }
+    .article-prose h2, .article-prose h3 { color: #071b38; letter-spacing: -.02em; }
+    .article-prose a { color: #126cc4; font-weight: 600; }
+    [data-theme="dark"] body { color: #daeafa; background: #071424; }
+    [data-theme="dark"] .bg-white { background-color: #102440 !important; }
+    [data-theme="dark"] .text-gray-900, [data-theme="dark"] .text-slate-900 { color: #e8f4ff !important; }
+    [data-theme="dark"] .text-gray-600, [data-theme="dark"] .text-slate-600 { color: #9db2cb !important; }
+    [data-theme="dark"] .border-slate-100, [data-theme="dark"] .border-gray-100 { border-color: rgba(172,215,255,.12) !important; }
   </style>
-
-  <!-- 弹窗 HTML 结构 -->
-  <div id="popupOverlay">
-    <div class="popup-content">
-      <div class="space-y-4">
-        <a href="https://ml.yfqz1.net/register?code=PCC6A3bC" target="_blank" class="popup-link block group">
-          <p class="popup-title group-hover:text-blue-600 transition">Clash 机场推荐</p>
-          <img src="https://clash-for-android.github.io/img/2025091511003119.png" alt="机场地址" class="popup-image mx-auto">
-        </a>
-        <div class="pt-4 border-t border-gray-100">
-          <a href="http://shop.xinkonyun.cc/" target="_blank" class="inline-block w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 shadow-md">
-            🛒 购买 Shadowrocket 独享账号/海外其他账号
-          </a>
-        </div>
-      </div>
-      <button class="popup-close-btn" id="popupCloseBtn">×</button>
-    </div>
-  </div>
-
-  <!-- 弹窗控制脚本 -->
-  <script>
-    (function() {
-      const popupOverlay = document.getElementById('popupOverlay');
-      const popupCloseBtn = document.getElementById('popupCloseBtn');
-      const popupLink = document.getElementById('popupLink');
-      
-      // 页面加载完成后显示弹窗
-      window.addEventListener('DOMContentLoaded', function() {
-        popupOverlay.classList.add('show');
-      });
-      
-      // 关闭按钮点击事件：关闭弹窗
-      popupCloseBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        // 关闭弹窗
-        popupOverlay.classList.remove('show');
-      });
-      
-      // 移除背景遮罩点击关闭的逻辑
-      // 现在点击背景不会关闭弹窗，实现强制引导效果
-      popupOverlay.addEventListener('click', function(e) {
-        // 只有点击关闭按钮才能关闭弹窗
-        if (e.target === popupOverlay) {
-          e.stopPropagation();
-        }
-      });
-    })();
-  </script>
 </head>
