@@ -144,3 +144,46 @@ layout: default
     <div class="relative mx-auto max-w-2xl"><p class="font-mono text-xs tracking-[.16em] text-cyan-100">BUILD A CLEARER ROUTINE</p><h2 class="mt-4 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">从一篇教程开始，建立自己的配置习惯。</h2><p class="mt-4 text-sm leading-7 text-blue-100/85 sm:text-base">阅读基础概念、保留配置备份，并在每次调整后记录变化。清晰的过程比一次性找到答案更重要。</p><a href="#latest" class="button-primary mt-7">阅读最新文章 <span aria-hidden="true">→</span></a></div>
   </div>
 </section>
+
+<div id="cfvPopupOverlay" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="cfvPopupTitle" aria-describedby="cfvPopupDescription">
+  <div class="relative w-full max-w-sm overflow-hidden rounded-3xl border border-white/20 bg-white shadow-2xl shadow-slate-950/40">
+    <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-cyan-300 via-sky-500 to-indigo-600"></div>
+    <button id="cfvPopupClose" type="button" class="absolute right-4 top-4 z-10 inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white/90 text-xl leading-none text-slate-500 transition hover:border-sky-200 hover:bg-sky-50 hover:text-blue-700" aria-label="关闭配置提示">×</button>
+    <div class="relative overflow-hidden bg-gradient-to-br from-[#08224a] via-[#124a91] to-[#087c9e] px-7 pb-6 pt-8 text-white">
+      <div class="absolute inset-0 opacity-25" style="background-image: linear-gradient(rgba(186,230,253,.7) 1px, transparent 1px), linear-gradient(90deg, rgba(186,230,253,.7) 1px, transparent 1px); background-size: 20px 20px;"></div>
+      <svg class="absolute -bottom-8 -right-7 h-44 w-44 text-cyan-200/40" viewBox="0 0 160 160" fill="none" aria-hidden="true"><path d="M18 112 61 74l28 18 52-56" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="112" r="5" fill="currentColor"/><circle cx="61" cy="74" r="5" fill="currentColor"/><circle cx="89" cy="92" r="5" fill="currentColor"/><circle cx="141" cy="36" r="5" fill="currentColor"/></svg>
+      <div class="relative"><p class="font-mono text-[11px] tracking-[.16em] text-cyan-100">CLASHFORVERGE / NOTICE</p><h2 id="cfvPopupTitle" class="mt-3 max-w-xs text-2xl font-extrabold tracking-tight">配置前，先完成三项检查</h2><p id="cfvPopupDescription" class="mt-3 max-w-xs text-sm leading-6 text-blue-100/85">先确认客户端版本、保存原有配置、核对文件来源。清晰的检查顺序能减少重复导入和排错成本。</p></div>
+    </div>
+    <div class="p-6">
+      <div class="grid grid-cols-3 gap-2 text-center text-[11px] font-semibold text-slate-600"><span class="rounded-xl bg-sky-50 px-2 py-2">客户端核验</span><span class="rounded-xl bg-sky-50 px-2 py-2">配置备份</span><span class="rounded-xl bg-sky-50 px-2 py-2">来源检查</span></div>
+      <a href="{{ '/categories/client-config/' | relative_url }}" class="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-ink px-4 py-3.5 text-sm font-bold text-white transition hover:bg-ocean">查看配置指南 <span aria-hidden="true">→</span></a>
+      <a href="{{ '/categories/node-guides/' | relative_url }}" class="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 py-3 text-sm font-bold text-slate-700 transition hover:border-sky-200 hover:bg-sky-50 hover:text-blue-700">查看节点核验 <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+</div>
+
+<script>
+  (() => {
+    const overlay = document.getElementById('cfvPopupOverlay');
+    const closeButton = document.getElementById('cfvPopupClose');
+    const dismissedKey = 'cfv-popup-dismissed';
+    if (!overlay || sessionStorage.getItem(dismissedKey) === '1') return;
+
+    const closePopup = () => {
+      overlay.classList.add('hidden');
+      overlay.classList.remove('flex');
+      document.body.classList.remove('overflow-hidden');
+      sessionStorage.setItem(dismissedKey, '1');
+      document.removeEventListener('keydown', handleKeydown);
+    };
+    const handleKeydown = (event) => { if (event.key === 'Escape') closePopup(); };
+
+    overlay.classList.remove('hidden');
+    overlay.classList.add('flex');
+    document.body.classList.add('overflow-hidden');
+    setTimeout(() => closeButton?.focus(), 0);
+    closeButton?.addEventListener('click', closePopup);
+    overlay.addEventListener('click', (event) => { if (event.target === overlay) closePopup(); });
+    document.addEventListener('keydown', handleKeydown);
+  })();
+</script>
