@@ -146,19 +146,15 @@ layout: default
 </section>
 
 <div id="cfvPopupOverlay" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="cfvPopupTitle" aria-describedby="cfvPopupDescription">
-  <div class="relative w-full max-w-sm overflow-hidden rounded-3xl border border-white/20 bg-white shadow-2xl shadow-slate-950/40">
-    <div class="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-cyan-300 via-sky-500 to-indigo-600"></div>
-    <button id="cfvPopupClose" type="button" class="absolute right-4 top-4 z-10 inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white/90 text-xl leading-none text-slate-500 transition hover:border-sky-200 hover:bg-sky-50 hover:text-blue-700" aria-label="关闭配置提示">×</button>
-    <div class="relative overflow-hidden bg-gradient-to-br from-[#08224a] via-[#124a91] to-[#087c9e] px-7 pb-6 pt-8 text-white">
-      <div class="absolute inset-0 opacity-25" style="background-image: linear-gradient(rgba(186,230,253,.7) 1px, transparent 1px), linear-gradient(90deg, rgba(186,230,253,.7) 1px, transparent 1px); background-size: 20px 20px;"></div>
-      <svg class="absolute -bottom-8 -right-7 h-44 w-44 text-cyan-200/40" viewBox="0 0 160 160" fill="none" aria-hidden="true"><path d="M18 112 61 74l28 18 52-56" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="112" r="5" fill="currentColor"/><circle cx="61" cy="74" r="5" fill="currentColor"/><circle cx="89" cy="92" r="5" fill="currentColor"/><circle cx="141" cy="36" r="5" fill="currentColor"/></svg>
-      <div class="relative"><p class="font-mono text-[11px] tracking-[.16em] text-cyan-100">CLASHFORVERGE / NOTICE</p><h2 id="cfvPopupTitle" class="mt-3 max-w-xs text-2xl font-extrabold tracking-tight">配置前，先完成三项检查</h2><p id="cfvPopupDescription" class="mt-3 max-w-xs text-sm leading-6 text-blue-100/85">先确认客户端版本、保存原有配置、核对文件来源。清晰的检查顺序能减少重复导入和排错成本。</p></div>
-    </div>
-    <div class="p-6">
-      <div class="grid grid-cols-3 gap-2 text-center text-[11px] font-semibold text-slate-600"><span class="rounded-xl bg-sky-50 px-2 py-2">客户端核验</span><span class="rounded-xl bg-sky-50 px-2 py-2">配置备份</span><span class="rounded-xl bg-sky-50 px-2 py-2">来源检查</span></div>
-      <a href="{{ '/categories/client-config/' | relative_url }}" class="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-ink px-4 py-3.5 text-sm font-bold text-white transition hover:bg-ocean">查看配置指南 <span aria-hidden="true">→</span></a>
-      <a href="{{ '/categories/node-guides/' | relative_url }}" class="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 px-4 py-3 text-sm font-bold text-slate-700 transition hover:border-sky-200 hover:bg-sky-50 hover:text-blue-700">查看节点核验 <span aria-hidden="true">↗</span></a>
-    </div>
+  <div class="relative w-full max-w-[23rem] overflow-hidden rounded-xl bg-white shadow-2xl shadow-slate-950/45">
+    <button id="cfvPopupClose" type="button" class="absolute right-3 top-3 z-20 inline-flex h-8 w-8 items-center justify-center rounded-full text-2xl leading-none text-slate-400 transition hover:bg-slate-100 hover:text-blue-700" aria-label="关闭配置提示">×</button>
+    <div class="border-b border-slate-100 px-6 py-4 text-center"><p class="font-mono text-[10px] tracking-[.18em] text-sky-700">CLASHFORVERGE</p><h2 id="cfvPopupTitle" class="mt-1 text-lg font-extrabold tracking-tight text-ink">Clash 配置速查</h2></div>
+    <a href="https://ml.yfqz1.net/register?code=PCC6A3bC" target="_blank" rel="noopener noreferrer" aria-label="前往节点注册入口" class="mx-5 mt-5 relative block h-48 overflow-hidden rounded-lg bg-gradient-to-br from-[#061932] via-[#0d4385] to-[#087e9f] p-5 text-white transition hover:brightness-110 focus-visible:outline focus-visible:outline-3 focus-visible:outline-cyan-300">
+      <div class="absolute inset-0 opacity-30" style="background-image: linear-gradient(rgba(186,230,253,.65) 1px, transparent 1px), linear-gradient(90deg, rgba(186,230,253,.65) 1px, transparent 1px); background-size: 18px 18px;"></div>
+      <svg class="absolute -right-3 -bottom-7 h-40 w-40 text-cyan-100/45" viewBox="0 0 160 160" fill="none" aria-hidden="true"><path d="M18 112 61 74l28 18 52-56" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="112" r="5" fill="currentColor"/><circle cx="61" cy="74" r="5" fill="currentColor"/><circle cx="89" cy="92" r="5" fill="currentColor"/><circle cx="141" cy="36" r="5" fill="currentColor"/></svg>
+      <div class="relative"><p class="font-mono text-[10px] tracking-[.16em] text-cyan-100">CHECKLIST / 03 STEPS</p><p class="mt-3 max-w-[12rem] text-xl font-extrabold leading-tight">从客户端到节点，按步骤完成检查。</p><div class="mt-5 flex gap-2 text-[10px] font-bold"><span class="rounded-md bg-white/15 px-2 py-1">版本</span><span class="rounded-md bg-white/15 px-2 py-1">备份</span><span class="rounded-md bg-white/15 px-2 py-1">来源</span></div></div>
+    </a>
+    <div class="px-5 pb-5 pt-4 text-center"><p id="cfvPopupDescription" class="text-sm leading-6 text-slate-600">节点注册与客户端账号购买入口已整理在此。选择入口前，请自行确认服务条款、设备兼容性与账户信息。</p><a href="https://ml.yfqz1.net/register?code=PCC6A3bC" target="_blank" rel="noopener noreferrer" class="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-[#0a2c5d] to-[#117e9f] px-4 py-3.5 text-sm font-bold text-white transition hover:brightness-110">前往节点注册入口 <span aria-hidden="true">→</span></a><a href="https://shop.xinkonyun.cc/products/Shadowrocket" target="_blank" rel="noopener noreferrer" class="mt-3 inline-flex items-center gap-2 text-sm font-bold text-blue-700 transition hover:text-blue-900">购买 Shadowrocket 账号 <span aria-hidden="true">↗</span></a></div>
   </div>
 </div>
 
