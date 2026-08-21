@@ -96,6 +96,20 @@ layout: default
   </div>
 </section>
 
+<section id="keyword-columns" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+  <div class="flex flex-col justify-between gap-5 md:flex-row md:items-end">
+    <div class="section-heading"><p class="eyebrow">Topic columns</p><h2>五个常见检索主题，分别从哪里开始</h2><p>这些栏目用于梳理常见搜索词背后的实际问题。先理解客户端、文件来源与检查顺序，再进入具体的配置和排错步骤。</p></div>
+    <a href="{{ '/tags/' | relative_url }}" class="inline-flex items-center gap-2 text-sm font-bold text-blue-700 hover:text-blue-900">浏览全部主题 <span aria-hidden="true">→</span></a>
+  </div>
+  <div class="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-5">
+    <article class="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-soft"><p class="font-mono text-xs tracking-[.12em] text-sky-700">01 / CLIENT</p><h3 class="mt-4 text-xl font-extrabold text-ink">ClashMeta</h3><p class="mt-3 text-sm leading-7 text-slate-600">使用 ClashMeta 前，先确认内核版本、配置格式和策略组逻辑。导入后从日志、DNS 与规则顺序逐项检查，能减少把配置问题误判为客户端问题的情况。</p><a href="{{ '/categories/client-config/' | relative_url }}" class="mt-5 text-sm font-bold text-blue-700">查看 ClashMeta 配置 →</a></article>
+    <article class="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-soft"><p class="font-mono text-xs tracking-[.12em] text-sky-700">02 / CHECK</p><h3 class="mt-4 text-xl font-extrabold text-ink">谷歌加速器</h3><p class="mt-3 text-sm leading-7 text-slate-600">搜索谷歌加速器时，建议先辨识系统平台、客户端来源和当前网络状况。不要仅依据名称或单次测试结果导入未知文件，应先保留原有配置并查看版本说明。</p><a href="{{ '/categories/client-config/' | relative_url }}" class="mt-5 text-sm font-bold text-blue-700">查看客户端核验 →</a></article>
+    <article class="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-soft"><p class="font-mono text-xs tracking-[.12em] text-sky-700">03 / SOURCE</p><h3 class="mt-4 text-xl font-extrabold text-ink">Clash免费节点</h3><p class="mt-3 text-sm leading-7 text-slate-600">面对 Clash免费节点 相关信息，重要的是记录文件来源、更新时间和格式兼容性。导入前完成备份，导入后检查策略组和错误提示，比反复替换未知链接更便于排查。</p><a href="{{ '/categories/node-guides/' | relative_url }}" class="mt-5 text-sm font-bold text-blue-700">查看来源核验 →</a></article>
+    <article class="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-soft"><p class="font-mono text-xs tracking-[.12em] text-sky-700">04 / COMPARE</p><h3 class="mt-4 text-xl font-extrabold text-ink">节点推荐</h3><p class="mt-3 text-sm leading-7 text-slate-600">节点推荐不应只看名称或单一指标。更实际的比较方式是确认客户端支持、配置透明度、更新记录和异常后的处理路径，并结合自己的设备与使用场景判断。</p><a href="{{ '/categories/node-guides/' | relative_url }}" class="mt-5 text-sm font-bold text-blue-700">查看比较维度 →</a></article>
+    <article class="flex flex-col rounded-2xl border border-slate-200 bg-white p-5 shadow-soft"><p class="font-mono text-xs tracking-[.12em] text-sky-700">05 / REVIEW</p><h3 class="mt-4 text-xl font-extrabold text-ink">飞机场节点</h3><p class="mt-3 text-sm leading-7 text-slate-600">飞机场节点通常需要结合订阅文件、策略组和客户端版本共同查看。遇到导入失败、规则异常或连接波动时，先核对文件格式与系统网络，再根据日志定位原因。</p><a href="{{ '/categories/node-guides/' | relative_url }}" class="mt-5 text-sm font-bold text-blue-700">查看导入检查 →</a></article>
+  </div>
+</section>
+
 <section id="latest" class="border-y border-blue-100 bg-white">
   <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
     <div class="flex flex-col justify-between gap-6 md:flex-row md:items-end"><div class="section-heading"><p class="eyebrow">Reading list</p><h2>最近整理的文章</h2><p>从现有文章中挑选近期更新内容。遇到具体问题时，可使用标题关键词继续检索同类主题。</p></div><a href="{{ '/tags/' | relative_url }}" class="button-primary !px-5 !py-3">所有文章 <span aria-hidden="true">→</span></a></div>
