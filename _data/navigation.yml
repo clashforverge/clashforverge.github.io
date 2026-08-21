@@ -1,10 +1,10 @@
 - name: 首页
   link: /
-- name: 入门路线
-  link: /#start
-- name: 客户端
-  link: /#clients
-- name: 排错速查
-  link: /#troubleshoot
+- name: 客户端配置
+  link: /categories/client-config/
+- name: 节点核验
+  link: /categories/node-guides/
+- name: 名称核验
+  link: /categories/service-check/
 - name: 全部文章
   link: /tags/
